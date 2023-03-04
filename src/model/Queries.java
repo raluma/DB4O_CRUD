@@ -6,18 +6,23 @@ import com.db4o.ObjectSet;
 import java.util.ArrayList;
 
 public class Queries {
+    private final String fileName;
 
-    public void create(Persona persona) {
-        ObjectContainer db = ConnectionPool.getConnection("test.db4o");
+    public Queries(String fileName) {
+        this.fileName = fileName;
+    }
 
-        db.store(persona);
+    public void createUser(User user) {
+        ObjectContainer db = ConnectionPool.getConnection(this.fileName);
+
+        db.store(user);
 
         ConnectionPool.closeConnection();
     }
 
-    public Persona read(int id) {
-        ObjectContainer db = ConnectionPool.getConnection("test.db4o");
-        ObjectSet<Persona> result = db.queryByExample(new Persona(id, null, 0, 0, 0));
+    public User readUser(String userName) {
+        ObjectContainer db = ConnectionPool.getConnection(this.fileName);
+        ObjectSet<User> result = db.queryByExample(new User(userName, null,null, null));
 
         if (result.hasNext()) {
             return result.next();
@@ -27,36 +32,64 @@ public class Queries {
         return null;
     }
 
-    public ArrayList<Persona> readAll() {
-        ObjectContainer db = ConnectionPool.getConnection("test.db4o");
-        ObjectSet<Persona> result = db.queryByExample(new Persona());
-        ArrayList<Persona> personas = new ArrayList<>();
+    public ArrayList<User> readUsers() {
+        ObjectContainer db = ConnectionPool.getConnection(this.fileName);
+        ObjectSet<User> result = db.queryByExample(new User());
+        ArrayList<User> users = new ArrayList<>();
 
         while (result.hasNext()) {
-             personas.add(result.next());
+             users.add(result.next());
         }
 
         ConnectionPool.closeConnection();
-        return personas;
+        return users;
     }
 
-    public void update(int id, String name) {
-        ObjectContainer db = ConnectionPool.getConnection("test.db4o");
-        ObjectSet<Persona> result = db.queryByExample(new Persona(id, null, 0, 0, 0));
+    public void updateUserName(String userName, String newUserName) {
+        ObjectContainer db = ConnectionPool.getConnection(this.fileName);
+        ObjectSet<User> result = db.queryByExample(new User(userName, null, null, null));
 
         if (result.hasNext()) {
-            Persona persona = result.next();
-            persona.setName(name);
+            User user = result.next();
+            user.setUsername(newUserName);
 
-            db.store(persona);
+            db.store(user);
         }
 
         ConnectionPool.closeConnection();
     }
 
-    public void delete(int id) {
-        ObjectContainer db = ConnectionPool.getConnection("test.db4o");
-        ObjectSet<Persona> result = db.queryByExample(new Persona(id, null, 0, 0, 0));
+    public void updatePassword(String userName, String password) {
+        ObjectContainer db = ConnectionPool.getConnection(this.fileName);
+        ObjectSet<User> result = db.queryByExample(new User(userName, null, null, null));
+
+        if (result.hasNext()) {
+            User user = result.next();
+            user.setPassword(password);
+
+            db.store(user);
+        }
+
+        ConnectionPool.closeConnection();
+    }
+
+    public void updateEmail(String userName, String email) {
+        ObjectContainer db = ConnectionPool.getConnection(this.fileName);
+        ObjectSet<User> result = db.queryByExample(new User(userName, null, null, null));
+
+        if (result.hasNext()) {
+            User user = result.next();
+            user.setEmail(email);
+
+            db.store(user);
+        }
+
+        ConnectionPool.closeConnection();
+    }
+
+    public void deleteUser(String userName) {
+        ObjectContainer db = ConnectionPool.getConnection(this.fileName);
+        ObjectSet<User> result = db.queryByExample(new User(userName, null, null, null));
 
         if (result.hasNext()) {
             db.delete(result.next());
