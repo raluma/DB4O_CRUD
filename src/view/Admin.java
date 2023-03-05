@@ -13,7 +13,6 @@ public class Admin extends JFrame {
     private JButton addBtn;
     private JButton dropBtn;
     private JButton updateBtn;
-    private JScrollPane ScrollPane;
 
     public Admin() {
         super();
@@ -21,34 +20,34 @@ public class Admin extends JFrame {
     }
 
     public JTable getTable() {
-        return table;
+        return this.table;
     }
 
     public JTextField getUserNameTxt() {
-        return userNameTxt;
+        return this.userNameTxt;
     }
 
     public JTextField getEmailTxt() {
-        return emailTxt;
+        return this.emailTxt;
     }
 
     public JTextField getPasswordTxt() {
-        return passwordTxt;
+        return this.passwordTxt;
     }
 
     public JComboBox getRolCombo() {
-        return rolCombo;
+        return this.rolCombo;
     }
 
     public JButton getAddBtn() {
-        return addBtn;
+        return this.addBtn;
     }
 
     public JButton getDropBtn() {
-        return dropBtn;
+        return this.dropBtn;
     }
 
     public JButton getUpdateBtn() {
-        return updateBtn;
+        return this.updateBtn;
     }
 }

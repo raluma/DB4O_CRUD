@@ -40,6 +40,9 @@ public class AdminCtrl implements ActionListener, MouseListener {
             };
         }
 
+        System.out.println(data.length);
+        System.out.println(Arrays.toString(data[2]));
+
         this.admin.getTable().setModel(new DefaultTableModel(
                 data,
                 new String[]{"Id", "Nombre de Usuario", "Email", "Contraseña", "Rol"}
