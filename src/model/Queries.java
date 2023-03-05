@@ -8,74 +8,93 @@ import java.util.ArrayList;
 public class Queries {
     private final String fileName;
 
-    public Queries(String fileName) {
-        this.fileName = fileName;
+    public Queries() {
+        this.fileName = "user.db40";
     }
 
-    public void createUser(User user) {
+    public boolean createUser(String userName, String password, String email, String role) {
         ObjectContainer db = ConnectionPool.getConnection(this.fileName);
 
-        db.store(user);
+        if (this.readUserByUserName(userName) == null &&
+                this.readUserByEmail(email) == null) {
+            int id;
 
-        ConnectionPool.closeConnection();
+            try {
+                ArrayList<User> users = this.readUsers();
+
+                id = users.get(users.size() - 1).getId() + 1;
+            } catch (Exception e) {
+                id = 1;
+            }
+
+            db.store(new User(id, userName, password, email, role));
+            return true;
+        }
+
+        return false;
     }
 
-    public User readUser(String userName) {
+    public User readUserById(int id) {
         ObjectContainer db = ConnectionPool.getConnection(this.fileName);
-        ObjectSet<User> result = db.queryByExample(new User(userName, null,null, null));
+        ObjectSet<User> result = db.queryByExample(new User(id, null, null,null, null));
 
         if (result.hasNext()) {
             return result.next();
         }
 
-        ConnectionPool.closeConnection();
+        return null;
+    }
+
+    public User readUserByUserName(String userName) {
+        ObjectContainer db = ConnectionPool.getConnection(this.fileName);
+        ObjectSet<User> result = db.queryByExample(new User(0, userName, null,null, null));
+
+        if (result.hasNext()) {
+            return result.next();
+        }
+
+        return null;
+    }
+
+    public User readUserByEmail(String email) {
+        ObjectContainer db = ConnectionPool.getConnection(this.fileName);
+        ObjectSet<User> result = db.queryByExample(new User(0, null, null, email, null));
+
+        if (result.hasNext()) {
+            return result.next();
+        }
+
         return null;
     }
 
     public ArrayList<User> readUsers() {
         ObjectContainer db = ConnectionPool.getConnection(this.fileName);
         ObjectSet<User> result = db.queryByExample(new User());
+
         ArrayList<User> users = new ArrayList<>();
 
         while (result.hasNext()) {
              users.add(result.next());
         }
 
-        ConnectionPool.closeConnection();
         return users;
     }
 
-    public void updateUserName(String userName, String newUserName) {
+    public void updateUserName(int id, String userName) {
         ObjectContainer db = ConnectionPool.getConnection(this.fileName);
-        ObjectSet<User> result = db.queryByExample(new User(userName, null, null, null));
+        ObjectSet<User> result = db.queryByExample(new User(id, null, null, null, null));
 
         if (result.hasNext()) {
             User user = result.next();
-            user.setUsername(newUserName);
+            user.setUsername(userName);
 
             db.store(user);
         }
-
-        ConnectionPool.closeConnection();
     }
 
-    public void updatePassword(String userName, String password) {
+    public void updateEmail(int id, String email) {
         ObjectContainer db = ConnectionPool.getConnection(this.fileName);
-        ObjectSet<User> result = db.queryByExample(new User(userName, null, null, null));
-
-        if (result.hasNext()) {
-            User user = result.next();
-            user.setPassword(password);
-
-            db.store(user);
-        }
-
-        ConnectionPool.closeConnection();
-    }
-
-    public void updateEmail(String userName, String email) {
-        ObjectContainer db = ConnectionPool.getConnection(this.fileName);
-        ObjectSet<User> result = db.queryByExample(new User(userName, null, null, null));
+        ObjectSet<User> result = db.queryByExample(new User(id, null, null, null, null));
 
         if (result.hasNext()) {
             User user = result.next();
@@ -83,18 +102,38 @@ public class Queries {
 
             db.store(user);
         }
-
-        ConnectionPool.closeConnection();
     }
 
-    public void deleteUser(String userName) {
+    public void updatePassword(int id, String password) {
         ObjectContainer db = ConnectionPool.getConnection(this.fileName);
-        ObjectSet<User> result = db.queryByExample(new User(userName, null, null, null));
+        ObjectSet<User> result = db.queryByExample(new User(id, null, null, null, null));
+
+        if (result.hasNext()) {
+            User user = result.next();
+            user.setPassword(password);
+
+            db.store(user);
+        }
+    }
+
+    public void updateRole(int id, String role) {
+        ObjectContainer db = ConnectionPool.getConnection(this.fileName);
+        ObjectSet<User> result = db.queryByExample(new User(id, null, null, null, null));
+
+        if (result.hasNext()) {
+            User user = result.next();
+            user.setRole(role);
+
+            db.store(user);
+        }
+    }
+
+    public void deleteUser(int id) {
+        ObjectContainer db = ConnectionPool.getConnection(this.fileName);
+        ObjectSet<User> result = db.queryByExample(new User(id, null, null, null, null));
 
         if (result.hasNext()) {
             db.delete(result.next());
         }
-
-        ConnectionPool.closeConnection();
     }
 }
