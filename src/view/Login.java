@@ -8,6 +8,7 @@ public class Login extends JFrame {
     private JPasswordField passTxt;
     private JButton signupBtn;
     private JButton loginBtn;
+    private JPanel form;
 
     public Login() {
         super();
