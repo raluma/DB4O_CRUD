@@ -66,6 +66,8 @@ public class UserCtrl implements ActionListener {
                 } else {
                     JOptionPane.showMessageDialog(null,
                             "El email no es válido.");
+
+                    this.userView.getEmailTxt().setText(this.user.getEmail());
                 }
             }
 
@@ -79,6 +81,9 @@ public class UserCtrl implements ActionListener {
                 } else {
                     JOptionPane.showMessageDialog(null,
                             "Las contraseñas son diferentes. Vuelva a intertarlo.");
+
+                    this.userView.getPass1Txt().setText(this.user.getPassword());
+                    this.userView.getPass2Txt().setText(this.user.getPassword());
                 }
             }
 
