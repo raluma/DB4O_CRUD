@@ -73,6 +73,9 @@ public class AdminCtrl implements ActionListener, MouseListener {
                 JOptionPane.showMessageDialog(null,
                         "Este nombre de Usuario o email ya está registrado");
             } else {
+                JOptionPane.showMessageDialog(null,
+                        "Se ha añadido el Usuario");
+
                 this.writeInTable();
             }
         } else if (e.getSource() == this.admin.getUpdateBtn()) {
@@ -120,7 +123,12 @@ public class AdminCtrl implements ActionListener, MouseListener {
                     updateDone = true;
                 }
 
-                if (updateDone) { this.writeInTable(); }
+                if (updateDone) {
+                    JOptionPane.showMessageDialog(null,
+                            "Se ha actualizado el Usuario");
+
+                    this.writeInTable();
+                }
 
             } catch (Exception exception) {
                 JOptionPane.showMessageDialog(null,
