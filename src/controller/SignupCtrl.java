@@ -14,7 +14,7 @@ public class SignupCtrl implements ActionListener {
     private void windowConfig() {
         this.signUp.setTitle("Registro");
         this.signUp.setLocationRelativeTo(null);
-        this.signUp.setSize(700, 400);
+        this.signUp.setSize(500, 400);
         this.signUp.setVisible(true);
     }
 
