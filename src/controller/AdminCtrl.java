@@ -140,8 +140,13 @@ public class AdminCtrl implements ActionListener, MouseListener {
                 int fila = this.admin.getTable().getSelectedRow();
                 int id = Integer.parseInt(this.admin.getTable().getValueAt(fila, 0).toString());
 
-                this.queries.deleteUser(id);
-                this.writeInTable();
+                if (fila != 0) {
+                    this.queries.deleteUser(id);
+                    this.writeInTable();
+                } else {
+                    JOptionPane.showMessageDialog(null,
+                            "El primer usuario Admin no puede ser eliminado");
+                }
 
             } catch (Exception exception) {
                 JOptionPane.showMessageDialog(null,
